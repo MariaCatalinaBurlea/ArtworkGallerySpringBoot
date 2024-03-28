@@ -12,12 +12,11 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findUserByEmail(@Param("email") String email);
 
-    List<UserWrapper> getAllUsers();
-    List<String> getAllAdmins();
+    UserWrapper getUserById(@Param("id") Integer id);
 
-    @Transactional
-    @Modifying
-    int updateStatus(@Param("status") String status, @Param("id") int id);
+    List<UserWrapper> getAllUsers();
+    List<String> getAllEmailAdmins();
 
     User findByEmail(String email);
+
 }

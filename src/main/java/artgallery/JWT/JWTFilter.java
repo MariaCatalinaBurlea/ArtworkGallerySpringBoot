@@ -32,7 +32,9 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // token validation here
-        if (httpServletRequest.getServletPath().matches("/user/login | /user/signup | /user/forgetPassword ")) {
+        if (httpServletRequest
+                .getServletPath()
+                .matches("/user/login|/user/signup")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             String authorizationHeader = httpServletRequest.getHeader("Authorization");

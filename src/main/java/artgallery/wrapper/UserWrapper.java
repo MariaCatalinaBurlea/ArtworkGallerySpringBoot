@@ -9,7 +9,11 @@ public class UserWrapper {
     private String status;
     private String address;
 
-    public UserWrapper(int id, String firstName, String lastName, String contactNumber, String email, String status, String address) {
+    private String role;
+    public UserWrapper() {
+    }
+
+    public UserWrapper(int id, String firstName, String lastName, String contactNumber, String email, String status, String address, String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,6 +21,7 @@ public class UserWrapper {
         this.email = email;
         this.status = status;
         this.address = address;
+        this.role = role;
     }
 
     public int getId() {
@@ -73,5 +78,13 @@ public class UserWrapper {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

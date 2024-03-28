@@ -54,6 +54,27 @@ public class UserControllerImplementation implements UserController {
     }
 
     @Override
+    public ResponseEntity<List<String>> getAllAdminEmails() {
+        try {
+            return userService.getAllEmailAdmins();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<UserWrapper> getById(Integer id) {
+        try{
+            return userService.getById(id);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new UserWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             return userService.update(requestMap);
@@ -75,4 +96,13 @@ public class UserControllerImplementation implements UserController {
         return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<String> deleteUser(Integer id) {
+        try{
+            return userService.deleteUser(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
