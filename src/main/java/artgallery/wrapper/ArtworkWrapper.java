@@ -6,6 +6,7 @@ public class ArtworkWrapper {
     private String description;
     private int price;
     private String status;
+    private String size;
     private int categoryId;
     private String categoryName;
 
@@ -20,6 +21,17 @@ public class ArtworkWrapper {
         this.status = status;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+    }
+
+    public ArtworkWrapper(int id, String title, String description, int price, String size, String status, int categoryId, String categoryName) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.size = size;
+        this.status = status;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.description = description;
     }
 
     public int getId() {
@@ -68,6 +80,14 @@ public class ArtworkWrapper {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getCategoryName() {

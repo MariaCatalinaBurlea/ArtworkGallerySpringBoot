@@ -139,6 +139,7 @@ public class ArtworkServiceImplementation implements ArtworkService {
         artwork.setCategory(category);
         artwork.setTitle(requestMap.get("title"));
         artwork.setPrice(Integer.parseInt(requestMap.get("price")));
+        artwork.setSize(requestMap.get("size"));
         artwork.setDescription(requestMap.get("description"));
         artwork.setSize(requestMap.get("size"));
         return artwork;

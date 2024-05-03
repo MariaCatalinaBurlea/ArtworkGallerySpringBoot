@@ -96,9 +96,8 @@ public class UserServiceImplementation implements UserService {
                 // Check if the admin allows that user (approved)
                 if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     artgallery.entity.User userDetail = customerUsersDetailsService.getUserDetail();
-                    return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
-                            userDetail.getEmail(), userDetail.getRole() + "\"}"),
-                            HttpStatus.OK);
+                    String token = jwtUtil.generateToken(userDetail.getEmail(), userDetail.getRole());
+                    return new ResponseEntity<String>("{\"token\":\"" + token + "\"}", HttpStatus.OK);
                 } else {
                     return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval!",
                             HttpStatus.BAD_REQUEST);
@@ -191,6 +190,26 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
+        try {
+            if(jwtFilter.isAdmin()) {
+                Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("id")));
+                if(!optional.isEmpty()) {
+                    userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+                    return ArtGalleryUtils.getResponseEntity("User status updated successfully", HttpStatus.OK);
+                } else {
+                    return ArtGalleryUtils.getResponseEntity("User id doesn't exist.", HttpStatus.OK);
+                }
+            } else {
+                ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
         try {
             User userObj = userRepository.findByEmail(jwtFilter.getCurrentUser());
@@ -211,6 +230,47 @@ public class UserServiceImplementation implements UserService {
             ex.printStackTrace();
         }
         return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> checkToken() {
+        return ArtGalleryUtils.getResponseEntity("true", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getByRole(String role) {
+        log.info("Inside getAllUsers");
+        try {
+            if (!jwtFilter.isAdmin()) {
+                log.info("not admin");
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            } else {
+                log.info("admin");
+                return new ResponseEntity<>(userRepository.getUserByRole(role), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log.error("{}", ex);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getAll() {
+        log.info("Inside getAllUsers");
+        try {
+            if (!jwtFilter.isAdmin()) {
+                log.info("not admin");
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            } else {
+                log.info("admin");
+                return new ResponseEntity<>(userRepository.getAll(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log.error("{}", ex);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -245,16 +305,20 @@ public class UserServiceImplementation implements UserService {
             user.setId(Integer.parseInt(requestMap.get("id")));
             user.setRole(requestMap.get("role"));
         } else {
+            log.info("entered here");
             user.setRole("user");
             user.setPassword(requestMap.get("password"));
+            user.setStatus("false");
         }
 
-
+        if(user.getRole().equals("admin")){
+            user.setStatus("true");
+        }
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));
         user.setAddress(requestMap.get("address"));
-        user.setStatus("false");
+        user.setContactNumber(requestMap.get("contactNumber"));
 
         return user;
     }

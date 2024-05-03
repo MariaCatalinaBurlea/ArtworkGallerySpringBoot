@@ -1,0 +1,86 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row fxLayout="row">
+    <span>Sign Up</span>
+    <span class="spacer"> </span>
+    <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-topography">
+  <form [formGroup]="signupForm">
+    <div fxflex fxLayout="column">
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" required />
+        <mat-error *ngIf="signupForm.controls.firstName.touched && signupForm.controls.firstName.invalid">
+                <span *ngIf="signupForm.controls.firstName.errors.required">This field is mandatory.</span>
+            </mat-error>
+      </mat-form-field>
+
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" required />
+        <mat-error *ngIf="signupForm.controls.lastName.touched && signupForm.controls.lastName.invalid">
+            <span *ngIf="signupForm.controls.lastName.errors.required">This field is mandatory.</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
+        <mat-error *ngIf="signupForm.controls.email.touched && signupForm.controls.email.invalid">
+            <span *ngIf="signupForm.controls.email.errors.required">This field is mandatory.</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>Contact Number</mat-label>
+        <input matInput formControlName="contactNumber" />
+      </mat-form-field>
+
+      
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" />
+      </mat-form-field>
+
+      <mat-form-field apperance="standard" fxFlex>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          type="password"
+          required
+          [type]="password ? 'password' : 'text'"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="password = !password"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="password"
+        >
+          <mat-icon>{{ password ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-raised-button
+    style="background: #356aa5"
+    type="submit"
+    (click)="toggleSubmit()"
+    [disabled]="!signupForm.valid || !signupForm.dirty"
+  >
+    Signup<mat-icon>save</mat-icon>
+  </button>
+  <button mat-raised-button color="warn" mat-dialog-close>
+    Close<mat-icon>cancel</mat-icon>
+  </button>
+</mat-dialog-actions>

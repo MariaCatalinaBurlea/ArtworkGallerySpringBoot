@@ -20,6 +20,13 @@ import java.io.Serializable;
 @NamedQuery(name = "User.getUserById", query = "select new " +
         "artgallery.wrapper.UserWrapper(u.id, u.firstName, u.lastName,u.contactNumber,u.email, u.status, u.address, u.role) " +
         "from User u where u.id=:id")
+@NamedQuery(name = "User.getUserByRole", query = "select new " +
+        "artgallery.wrapper.UserWrapper(u.id, u.firstName, u.lastName,u.contactNumber,u.email, u.status, u.address, u.role) " +
+        "from User u where u.role=:role")
+@NamedQuery(name = "User.getAll", query = "select new " +
+        "artgallery.wrapper.UserWrapper(u.id, u.firstName, u.lastName,u.contactNumber,u.email, u.status, u.address, u.role) " +
+        "from User u")
+@NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
 
 @Entity
 @DynamicUpdate
@@ -72,6 +79,11 @@ public class User implements Serializable {
     private String role;
 
     public User() {
+    }
+
+    public User(String email, String password){
+        this.password = password;
+        this.email = email;
     }
 
     public User(String firstName, String lastName, String contactNumber, String email, String password, String address) {

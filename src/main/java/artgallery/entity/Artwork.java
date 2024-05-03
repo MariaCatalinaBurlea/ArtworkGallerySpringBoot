@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-@NamedQuery(name = "Artwork.getAllArtworks", query = "select new  artgallery.wrapper.ArtworkWrapper(a.id, a.title, a.description, a.price, a.status," +
+@NamedQuery(name = "Artwork.getAllArtworks", query = "select new  artgallery.wrapper.ArtworkWrapper(a.id, a.title, a.description, a.price, a.size, a.status," +
         " a.category.id, a.category.name) from Artwork a")
 
-@NamedQuery(name = "Artwork.getArtworkById", query = "select new  artgallery.wrapper.ArtworkWrapper(a.id, a.title, a.description, a.price, a.status," +
+@NamedQuery(name = "Artwork.getArtworkById", query = "select new  artgallery.wrapper.ArtworkWrapper(a.id, a.title, a.description, a.price, a.size, a.status," +
         " a.category.id, a.category.name) from Artwork a where a.id=:id")
 
 @NamedQuery(name = "Artwork.getArtworksByCategoryId", query = "select new  artgallery.wrapper.ArtworkWrapper(a.id, a.title, a.description, a.price, a.status," +

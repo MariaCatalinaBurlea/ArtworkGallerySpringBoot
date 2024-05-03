@@ -43,6 +43,37 @@ public class UserControllerImplementation implements UserController {
     }
 
     @Override
+    public ResponseEntity<String> checkToken() {
+        try {
+            return userService.checkToken();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getByRole(String role) {
+        try {
+            return userService.getByRole(role);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getAll() {
+        try {
+            return userService.getAll();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<List<UserWrapper>> getAllUsers() {
         try {
             return userService.getAllUsers();
@@ -66,9 +97,9 @@ public class UserControllerImplementation implements UserController {
 
     @Override
     public ResponseEntity<UserWrapper> getById(Integer id) {
-        try{
+        try {
             return userService.getById(id);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new UserWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,6 +109,17 @@ public class UserControllerImplementation implements UserController {
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             return userService.update(requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+        return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
+        try {
+            return userService.updateStatus(requestMap);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println(ex.getMessage());
@@ -98,9 +140,9 @@ public class UserControllerImplementation implements UserController {
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {
-        try{
+        try {
             return userService.deleteUser(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return ArtGalleryUtils.getResponseEntity(ArtGalleryConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
